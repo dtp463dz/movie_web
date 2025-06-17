@@ -20,11 +20,7 @@ const ListMovie = () => {
         };
         fetchListMovie();
     }, [page])
-    const handleChangePage = (newPage) => {
-        if (newPage >= 1 && newPage <= (pagination?.totalPages || 1)) {
-            setPage(newPage);
-        }
-    };
+
     return (
         <>
             <div className="max-w-7xl mx-auto px-4 py-8">
@@ -52,29 +48,7 @@ const ListMovie = () => {
                         onPageChange={(newPage) => setPage(newPage)}
                     />
                 )}
-                {/* {pagination && (
-                    <div className="flex justify-center mt-8 space-x-2 text-white">
-                        <button
-                            className="bg-gray-700 px-3 py-1 rounded hover:bg-gray-600 cursor-pointer"
-                            onClick={() => handleChangePage(page - 1)}
-                            disabled={page === 1}
-                        >
-                            Trước
-                        </button>
 
-                        <span className="text-lg text-yellow-400 px-4">
-                            Trang {page}/{pagination.totalPages}
-                        </span>
-
-                        <button
-                            className="bg-gray-700 px-3 py-1 rounded hover:bg-gray-600 cursor-pointer"
-                            onClick={() => handleChangePage(page + 1)}
-                            disabled={page === pagination.totalPages}
-                        >
-                            Sau
-                        </button>
-                    </div>
-                )} */}
             </div>
         </>
     )

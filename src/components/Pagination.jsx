@@ -33,6 +33,7 @@ const Pagination = (props) => {
                 </button>
                 {pageNumbers.map((page) => (
                     <button
+                        key={page}
                         onClick={() => onPageChange(page)}
                         className={`px-3 py-1 border border-gray-700 rounded hover:bg-gray-500 ${currentPage === page ? 'bg-indigo-600 border-indigo-500 text-white' : ''}`}
                     >
