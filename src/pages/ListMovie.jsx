@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getListMovie } from "../services/movieServies";
+import Pagination from "../components/Pagination";
 
 const ListMovie = () => {
     const [movies, setMovies] = useState([]);
@@ -10,7 +11,7 @@ const ListMovie = () => {
         const fetchListMovie = async () => {
             try {
                 const data = await getListMovie(page);
-                console.log('check response: ', data)
+                // console.log('check response: ', data)
                 setMovies(data.items || [])
                 setPagination(data.pagination || {})
             } catch (e) {
@@ -43,7 +44,15 @@ const ListMovie = () => {
 
 
                 </div>
-                {pagination && (
+                {pagination?.totalPages && (
+                    <Pagination
+                        currentPage={page}
+                        totalPages={pagination.totalPages}
+                        totalItems={pagination.totalItems}
+                        onPageChange={(newPage) => setPage(newPage)}
+                    />
+                )}
+                {/* {pagination && (
                     <div className="flex justify-center mt-8 space-x-2 text-white">
                         <button
                             className="bg-gray-700 px-3 py-1 rounded hover:bg-gray-600 cursor-pointer"
@@ -65,7 +74,7 @@ const ListMovie = () => {
                             Sau
                         </button>
                     </div>
-                )}
+                )} */}
             </div>
         </>
     )
