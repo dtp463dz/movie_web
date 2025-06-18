@@ -46,6 +46,12 @@ const geteCategoryDetail = async ({
     }
 };
 
+//phim va tap phim
+const getMovieDetail = async (slug) => {
+    const res = await api.get(`/phim/${slug}`);
+    return res.data
+}
+
 export {
-    getListMovie, getCategory, geteCategoryDetail
+    getListMovie, getCategory, geteCategoryDetail, getMovieDetail
 }

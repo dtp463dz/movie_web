@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { getListMovie } from "../services/movieServies";
 import Pagination from "../components/Pagination";
-
+import { useNavigate } from "react-router-dom";
 const ListMovie = () => {
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [pagination, setPagination] = useState(null);
-
+    const navigation = useNavigate();
     useEffect(() => {
         const fetchListMovie = async () => {
             try {
@@ -21,14 +21,18 @@ const ListMovie = () => {
         fetchListMovie();
     }, [page])
 
+    const handleClickView = (slug) => {
+        navigation(`/xem-phim/${slug}`)
+    }
     return (
         <>
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <h2 className="text-2xl font-bold text-blue-400 mb-6">Phim mới cập nhật</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 cursor-pointer" >
                     {movies.map((item) => (
                         <div key={item._id}
                             className="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition duration-300"
+                            onClick={() => handleClickView(item.slug)}
                         >
                             <img src={item.poster_url} alt={item.name} className="w-full h-64 object-cover" />
                             <div className="p-2">

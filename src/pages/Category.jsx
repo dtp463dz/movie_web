@@ -9,7 +9,7 @@ const Category = () => {
         const fetchCategory = async () => {
             try {
                 const data = await getCategory();
-                console.log('check data: ', data)
+                // console.log('check data: ', data)
                 setCategories(data);
             } catch (e) {
                 console.log('Lỗi khi lấy danh sách thể loại', e)
