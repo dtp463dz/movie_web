@@ -7,7 +7,7 @@ NProgress.configure({ showSpinner: false, speed: 500 });
 
 const api = axios.create({
     baseURL: 'https://phimapi.com/',
-    timeout: 3000,
+    timeout: 5000,
 });
 
 api.interceptors.request.use((config) => {

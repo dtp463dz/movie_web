@@ -10,13 +10,15 @@ const useMovieList = (apiFunction) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null)
 
+    const [pagination, setPagination] = useState(null);
+    const [page, setPage] = useState(1);
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
                 const res = await apiFunction({
                     type_list,
-                    page: 1,
+                    page,
                     sort_field: 'modified.time',
                     sort_type: 'desc',
                     limit: 24,
@@ -24,6 +26,7 @@ const useMovieList = (apiFunction) => {
                 setMovies(res.data.items || []);
                 setTitlePage(res.data.titlePage || "");
                 setDescription(res.data.seoOnPage || "");
+                setPagination(res?.data?.params?.pagination);
 
             } catch (error) {
                 setError(error);
@@ -32,9 +35,10 @@ const useMovieList = (apiFunction) => {
             }
         };
         fetchData();
-    }, [type_list, apiFunction])
+    }, [type_list, apiFunction, page])
+
     return {
-        movies, titlePage, loading, error, description
+        movies, titlePage, loading, error, description, pagination, page, setPage
     }
 }
 

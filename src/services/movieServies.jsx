@@ -26,7 +26,7 @@ const geteCategoryDetail = async ({
     type_list,
     page = 1,
     sort_field = "modified.time",
-    sort_type = "desc ",
+    sort_type = "desc",
     limit = 24,
 }) => {
     try {
@@ -52,6 +52,30 @@ const getMovieDetail = async (slug) => {
     return res.data
 }
 
+// danh sach tong hop
+const getGeneralList = async ({
+    type_list,
+    page = 1,
+    sort_field = "modified.time",
+    sort_type = "desc",
+    limit = 24,
+}) => {
+    try {
+        const res = await api.get(`/v1/api/danh-sach/${type_list}`, {
+            params: {
+                page,
+                sort_field,
+                sort_type,
+                limit,
+            },
+        });
+        return res.data;
+    } catch (e) {
+        console.log("Lỗi khi lấy chi tiết thể loại: ", e);
+        throw e;
+    }
+}
+
 export {
-    getListMovie, getCategory, geteCategoryDetail, getMovieDetail
+    getListMovie, getCategory, geteCategoryDetail, getMovieDetail, getGeneralList
 }
