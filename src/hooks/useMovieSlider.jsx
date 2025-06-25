@@ -1,10 +1,8 @@
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 
 export const useMovieSlider = () => {
     const navigate = useNavigate();
-    const sliderRef = useRef(null);
 
     const handleMovieClick = (slug) => {
         navigate(`/xem-phim/${slug}`);
@@ -13,14 +11,7 @@ export const useMovieSlider = () => {
     const handleImageError = (e) => {
         e.target.src = '/placeholder-movie.jpg';
     }
-    const goToPrev = () => {
-        sliderRef.current?.slickPrev();
-    };
-
-    const goToNext = () => {
-        sliderRef.current?.slickNext();
-    };
-
+        ;
     const getSliderSettings = (PrevArrow, NextArrow) => ({
         dots: false,
         infinite: false,
@@ -58,8 +49,6 @@ export const useMovieSlider = () => {
         getSliderSettings,
         getImageUrl,
         formatMovieData,
-        goToNext,
-        goToPrev
     }
 
 

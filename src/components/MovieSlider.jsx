@@ -11,15 +11,25 @@ const MovieSlider = ({ title, movies }) => {
     const {
         handleMovieClick,
         handleImageError,
-        getSliderSettings,
         getImageUrl,
-        sliderRef,
-        goToPrev,
-        goToNext,
     } = useMovieSlider();
     if (!movies || movies.length === 0) return null;
 
-    const settings = getSliderSettings()
+    const settings = {
+        dots: false,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 2,
+        arrows: true,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
+        responsive: [
+            { breakpoint: 1024, settings: { slidesToShow: 4 } },
+            { breakpoint: 768, settings: { slidesToShow: 3 } },
+            { breakpoint: 480, settings: { slidesToShow: 2 } }
+        ]
+    }
     // xem them
     const handleViewMore = () => {
 
@@ -27,16 +37,12 @@ const MovieSlider = ({ title, movies }) => {
 
     return (
         <div className="mb-10 text-white relative">
-            <PrevArrow onClick={goToPrev} />
-            <NextArrow onClick={goToNext} />
-
             <SliderHeader
                 title={title}
                 onViewMore={handleViewMore}
             />
-
             {/* Slider phim */}
-            <Slider ref={sliderRef} {...settings}>
+            <Slider  {...settings}>
                 {movies.map((movie) => (
                     <MovieCard
                         key={movie._id}
