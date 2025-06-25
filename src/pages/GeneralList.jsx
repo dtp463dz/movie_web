@@ -1,12 +1,10 @@
 import { getGeneralList } from "../services/movieServies";
 import useMovieList from "../hooks/useMovieList";
-import Header from "../components/Header";
-import MovieGrid from "../components/MovieGrid";
+import MovieGrid from "../components/movie/MovieGrid";
 const GeneralList = () => {
     const { movies, titlePage, loading, error, description, pagination, page, setPage } = useMovieList(getGeneralList);
     return (
         <>
-            <Header />
             <MovieGrid
                 movies={movies}
                 titlePage={titlePage}

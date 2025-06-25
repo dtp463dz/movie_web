@@ -1,14 +1,13 @@
 import { geteCategoryDetail } from "../services/movieServies";
 import Header from "../components/Header";
 import useMovieList from "../hooks/useMovieList";
-import MovieGrid from "../components/MovieGrid";
+import MovieGrid from "../components/movie/MovieGrid";
 
 const CategoryDetail = () => {
     const { movies, titlePage, loading, error, description, pagination, page, setPage } = useMovieList(geteCategoryDetail);
 
     return (
         <>
-            <Header />
             <MovieGrid
                 movies={movies}
                 titlePage={titlePage}

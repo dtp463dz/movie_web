@@ -1,0 +1,9 @@
+/* src/styles/MovieSlider.css */
+.slider-container {
+    position: relative;
+}
+
+.slider-container .slick-prev,
+.slider-container .slick-next {
+    display: none !important; /* Ẩn arrows mặc định */
+}

@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import ListPagination from "./ListPagination";
+import ListPagination from "../ListPagination";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const MovieGrid = (props) => {
     const navigation = useNavigate();
@@ -72,11 +74,11 @@ const MovieGrid = (props) => {
                             className="group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden"
                         >
                             <div className="relative overflow-hidden">
-                                <img
+                                <LazyLoadImage
                                     src={`https://img.phimapi.com/${item.poster_url}`}
                                     alt={item.name}
+                                    effect="blur"
                                     className="w-full h-64 sm:h-72 md:h-80 object-cover group-hover:scale-110 transition-transform duration-300"
-                                    loading="lazy"
                                     onError={(e) => {
                                         e.target.src = '/placeholder-movie.jpg'; // fallback image
                                     }}
