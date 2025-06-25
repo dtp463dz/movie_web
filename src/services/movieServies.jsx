@@ -76,6 +76,33 @@ const getGeneralList = async ({
     }
 }
 
+// tim kiem phim
+const searchMovies = async ({
+    keyword,
+    page = 1,
+    sort_field = "modified.time",
+    sort_type = "desc",
+    limit = 24,
+}) => {
+    try {
+        const res = await api.get(`/v1/api/tim-kiem`, {
+            params: {
+                keyword,
+                page,
+                sort_field,
+                sort_type,
+                limit,
+            },
+        });
+        return res.data;
+
+    } catch (e) {
+        console.log("Lỗi khi tìm kiếm phim: ", e);
+        throw e;
+    }
+
+}
+
 export {
-    getListMovie, getCategory, geteCategoryDetail, getMovieDetail, getGeneralList
+    getListMovie, getCategory, geteCategoryDetail, getMovieDetail, getGeneralList, searchMovies
 }

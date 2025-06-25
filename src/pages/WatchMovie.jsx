@@ -62,7 +62,6 @@ const WatchMovie = () => {
     };
     return (
         <>
-            <Header />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-2xl md:text-3xl font-bold mb-4 text-blue-400">
                     {movieData?.name} {movieData.type === "series" && `(Phần ${movieData.tmdb.season || 1})`}

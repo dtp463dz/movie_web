@@ -3,14 +3,12 @@ import Category from '../pages/Category';
 import SearchBar from './SearchBar';
 
 const Header = () => {
-    const handleSearch = () => {
-        // chuyen huong 
-    }
+
     return (
 
         <header className='bg-gray-900 text-white px-6 py-4 flex justify-between items-center shadow-md'>
             <Link to="/" className='text-blue-300 font-bold text-xl'>MovieWeb</Link>
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar />
             <nav className='space-x-6'>
                 <Link to="/danh-sach/phim-le" className='hover:text-blue-300'>Phim Lẻ</Link>
                 <Link to="/danh-sach/phim-bo" className='hover:text-blue-300'>Phim Bộ</Link>

@@ -1,22 +1,31 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { IoSearch } from 'react-icons/io5';
 const SearchBar = (props) => {
-    const { onSearch } = props;
-    const handleSubmit = () => {
+    const [keyword, setKeyword] = useState('');
+    const navigate = useNavigate();
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (keyword.trim()) {
+            navigate(`/tim-kiem?keyword=${encodeURIComponent(keyword)}`);
+            setKeyword('');
+        }
     }
     return (
         <form onSubmit={handleSubmit} className="relative w-full md:w-96">
             <input
                 type="search"
                 name="search"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
                 id="search"
                 className="w-full p-2 pl-10 pr-24 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
                 placeholder="Tìm phim..."
                 required
             />
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1116.65 16.65z" />
-                </svg>
+                <IoSearch className="w-4 h-4 text-gray-500 dark:text-gray-400" />
             </div>
             <button
                 type="submit"
