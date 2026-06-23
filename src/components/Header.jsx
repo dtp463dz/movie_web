@@ -46,7 +46,7 @@ const Header = () => {
                             <FiFilm color="white" size={16} />
                         </div>
                         <span style={{ fontWeight: 700, fontSize: 18, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
-                            Movie<span style={{ color: 'var(--accent)' }}>Web</span>
+                            Happy<span style={{ color: 'var(--accent)' }}>Movie</span>
                         </span>
                     </Link>
 
