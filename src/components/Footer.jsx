@@ -18,7 +18,7 @@ const Footer = () => {
                                 <FiFilm color="white" size={15} />
                             </div>
                             <span style={{ fontWeight: 700, fontSize: 17, color: 'var(--text-primary)' }}>
-                                Movie<span style={{ color: 'var(--accent)' }}>Web</span>
+                                Happy<span style={{ color: 'var(--accent)' }}>Movie</span>
                             </span>
                         </Link>
                         <p style={{ color: 'var(--text-muted)', fontSize: 13, maxWidth: 260, lineHeight: 1.7 }}>
@@ -69,7 +69,7 @@ const Footer = () => {
 
                 <div style={{ borderTop: '1px solid var(--border)', paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
                     <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: 0 }}>
-                        © {new Date().getFullYear()} MovieWeb. All rights reserved.
+                        © {new Date().getFullYear()} HappyMovie. All rights reserved.
                     </p>
                     <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: 0, display: 'flex', alignItems: 'center', gap: 5 }}>
                         Made with <FiHeart size={12} style={{ color: 'var(--accent)' }} /> for movie lovers
