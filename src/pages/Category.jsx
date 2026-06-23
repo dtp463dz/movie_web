@@ -1,47 +1,109 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getCategory } from "../services/movieServies";
 import { Link } from 'react-router-dom';
-import { IoMdArrowDropdown } from "react-icons/io";
-const Category = () => {
+import { FiChevronDown } from "react-icons/fi";
+
+const Category = ({ mobile = false }) => {
     const [categories, setCategories] = useState([]);
+    const [open, setOpen] = useState(false);
+    const ref = useRef(null);
 
     useEffect(() => {
-        const fetchCategory = async () => {
-            try {
-                const data = await getCategory();
-                // console.log('check data: ', data)
-                setCategories(data);
-            } catch (e) {
-                console.log('Lỗi khi lấy danh sách thể loại', e)
-            }
+        getCategory().then(data => data && setCategories(data)).catch(console.error);
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (ref.current && !ref.current.contains(e.target)) setOpen(false);
         };
-        fetchCategory();
-    }, [])
-    return (
-        <div className="relative inline-block text-left group">
-            <button
-                className="inline-flex items-center justify-center text-sm font-medium text-white hover:text-blue-300"
-                type="button"
-                aria-haspopup="true"
-            >
-                Thể loại
-                <IoMdArrowDropdown className="ml-1 w-5 h-5 text-blue-300" />
-            </button>
-            {/* Dropdown hiển thị khi hover */}
-            <div className="absolute z-50 mt-4 w-[450px] hidden group-hover:block bg-white dark:bg-slate-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="px-2 py-3 grid grid-cols-3 gap-1 max-h-96 overflow-y-auto">
-                    {categories.map((item) => (
-                        <Link
-                            key={item.slug}
-                            to={`/the-loai/${item.slug}`}
-                            className="px-3 py-1.5 text-sm text-gray-900 dark:text-white rounded-md hover:bg-violet-500 hover:text-white transition"
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    if (mobile) {
+        return (
+            <div>
+                <p style={{ color: 'var(--text-muted)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
+                    Thể loại
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
+                    {categories.map(item => (
+                        <Link key={item.slug} to={`/the-loai/${item.slug}`} style={{
+                            padding: '7px 10px', borderRadius: 6, fontSize: 13,
+                            color: 'var(--text-secondary)', textDecoration: 'none',
+                        }}
+                            onMouseEnter={e => e.currentTarget.style.color = 'white'}
+                            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
                         >
                             {item.name}
                         </Link>
                     ))}
                 </div>
             </div>
+        );
+    }
+
+    return (
+        <div ref={ref} style={{ position: 'relative' }}>
+            <button
+                onClick={() => setOpen(!open)}
+                style={{
+                    display: 'flex', alignItems: 'center', gap: 4,
+                    background: 'none', border: 'none', cursor: 'pointer',
+                    color: open ? 'var(--text-primary)' : 'var(--text-secondary)',
+                    fontSize: 14, fontWeight: open ? 600 : 400,
+                    padding: 0, transition: 'color 0.2s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
+                onMouseLeave={e => { if (!open) e.currentTarget.style.color = 'var(--text-secondary)'; }}
+            >
+                Thể loại
+                <FiChevronDown size={14} style={{ transition: 'transform 0.2s', transform: open ? 'rotate(180deg)' : 'none' }} />
+            </button>
+
+            {open && (
+                <div style={{
+                    position: 'absolute', top: 'calc(100% + 12px)', left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'var(--bg-surface)',
+                    border: '1px solid var(--border-hover)',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: 16, width: 420,
+                    boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+                    backdropFilter: 'blur(20px)',
+                    zIndex: 100,
+                }}>
+                    <div style={{
+                        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+                        gap: 2, maxHeight: 320, overflowY: 'auto',
+                    }}>
+                        {categories.map(item => (
+                            <Link
+                                key={item.slug}
+                                to={`/the-loai/${item.slug}`}
+                                onClick={() => setOpen(false)}
+                                style={{
+                                    padding: '8px 12px', borderRadius: 8,
+                                    fontSize: 13, color: 'var(--text-secondary)',
+                                    textDecoration: 'none', transition: 'all 0.15s',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.background = 'var(--accent-dim)';
+                                    e.currentTarget.style.color = 'white';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.background = 'transparent';
+                                    e.currentTarget.style.color = 'var(--text-secondary)';
+                                }}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
-}
+};
+
 export default Category;

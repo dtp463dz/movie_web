@@ -1,6 +1,75 @@
 @import "tailwindcss";
 
-@theme{
-    --color-avocado-100: oklch(0.99 0 0);
-    --color-primary: #1E40AF;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-base: #0a0a0f;
+    --bg-surface: #12121a;
+    --bg-card: #1a1a26;
+    --bg-card-hover: #202030;
+    --border: rgba(255, 255, 255, 0.07);
+    --border-hover: rgba(255, 255, 255, 0.15);
+    --accent: #e50914;
+    --accent-hover: #ff1a25;
+    --accent-dim: rgba(229, 9, 20, 0.15);
+    --text-primary: #f0f0f0;
+    --text-secondary: #a0a0b0;
+    --text-muted: #606070;
+    --gold: #f5c518;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+}
+
+#nprogress .bar {
+    background: var(--accent) !important;
+    height: 2px !important;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-surface);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.slick-prev,
+.slick-next {
+    display: none !important;
+}
+
+.slick-track {
+    display: flex !important;
+    align-items: stretch;
+}
+
+.slick-slide>div {
+    height: 100%;
 }

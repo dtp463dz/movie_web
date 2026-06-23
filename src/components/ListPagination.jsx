@@ -1,17 +1,12 @@
-import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const ListPagination = (props) => {
     const {
-        currentPage,
-        totalPages,
-        totalItems,
-        totalItemsPerPage,
-        page,
-        setPage,
-        loading = false,
-        maxPagesToShow = 5
+        currentPage, totalPages, totalItems, totalItemsPerPage,
+        page, setPage, loading = false, maxPagesToShow = 7
     } = props;
-    if (totalPages <= 1) return null;
+
+    if (!totalPages || totalPages <= 1) return null;
 
     const getPageNumbers = () => {
         const pages = [];
@@ -20,59 +15,85 @@ const ListPagination = (props) => {
         if (endPage - startPage + 1 < maxPagesToShow) {
             startPage = Math.max(1, endPage - maxPagesToShow + 1);
         }
-        for (let i = startPage; i <= endPage; i++) {
-            pages.push(i);
-        }
+        for (let i = startPage; i <= endPage; i++) pages.push(i);
         return pages;
     };
+
     const startItem = (currentPage - 1) * totalItemsPerPage + 1;
     const endItem = Math.min(currentPage * totalItemsPerPage, totalItems);
 
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages && !loading) {
             setPage(newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
-    const pageNumbers = getPageNumbers();
+    const btnBase = {
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+        width: 36, height: 36,
+        borderRadius: 8,
+        border: '1px solid var(--border)',
+        background: 'var(--bg-card)',
+        color: 'var(--text-secondary)',
+        fontSize: 13, fontWeight: 500,
+        cursor: 'pointer',
+        transition: 'all 0.15s',
+    };
+
     return (
-        <div className=" flex mt-12 space-y-6 justify-between items-center">
-            <div className="text-center text-gray-600 ">
-                <p className="text-sm">
-                    Hiển thị <span className="font-semibold">{startItem}</span> đến <span className="font-semibold">{endItem}</span> trong tổng số {' '}
-                    <span className="font-semibold">{totalItems}</span> kết quả
-                </p>
-            </div>
-            <div className="flex items-center space-x-1">
+        <div style={{
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            marginTop: 48, flexWrap: 'wrap', gap: 16,
+        }}>
+            {/* Count */}
+            <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: 0 }}>
+                Hiển thị <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>{startItem}</span>–<span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>{endItem}</span> trong tổng số{' '}
+                <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{totalItems?.toLocaleString()}</span> kết quả
+            </p>
+
+            {/* Buttons */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 <button
                     onClick={() => handlePageChange(page - 1)}
-                    disabled={currentPage === 1}
-                    className="px-3 py-2 border border-gray-700 rounded hover:bg-indigo-600 hover:text-white hover:border-indigo-500 disabled:opacity-40 cursor-pointer"
+                    disabled={currentPage === 1 || loading}
+                    style={{ ...btnBase, opacity: currentPage === 1 ? 0.3 : 1 }}
+                    onMouseEnter={e => { if (currentPage !== 1) e.currentTarget.style.background = 'var(--bg-card-hover)'; }}
+                    onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-card)'}
                 >
-                    <GrFormPreviousLink />
+                    <FiChevronLeft size={16} />
                 </button>
-                {pageNumbers.map((page) => (
+
+                {getPageNumbers().map((p) => (
                     <button
-                        key={page}
-                        onClick={() => handlePageChange(page)}
-                        className={`cursor-pointer px-3 py-1 border border-gray-700 rounded hover:bg-indigo-600 hover:text-white hover:border-indigo-500 ${currentPage === page ? 'bg-indigo-600 border-indigo-500 text-white ' : ''}`}
+                        key={p}
+                        onClick={() => handlePageChange(p)}
+                        style={{
+                            ...btnBase,
+                            background: currentPage === p ? 'var(--accent)' : 'var(--bg-card)',
+                            borderColor: currentPage === p ? 'var(--accent)' : 'var(--border)',
+                            color: currentPage === p ? 'white' : 'var(--text-secondary)',
+                            fontWeight: currentPage === p ? 700 : 400,
+                        }}
+                        onMouseEnter={e => { if (currentPage !== p) e.currentTarget.style.background = 'var(--bg-card-hover)'; }}
+                        onMouseLeave={e => { if (currentPage !== p) e.currentTarget.style.background = 'var(--bg-card)'; }}
                     >
-                        {page}
+                        {p}
                     </button>
-                ))
-                }
+                ))}
+
                 <button
                     onClick={() => handlePageChange(page + 1)}
-                    disabled={currentPage === totalPages}
-                    className="px-3 py-2 border border-gray-700 rounded hover:bg-indigo-600 hover:text-white hover:border-indigo-500 disabled:opacity-40 cursor-pointer"
+                    disabled={currentPage === totalPages || loading}
+                    style={{ ...btnBase, opacity: currentPage === totalPages ? 0.3 : 1 }}
+                    onMouseEnter={e => { if (currentPage !== totalPages) e.currentTarget.style.background = 'var(--bg-card-hover)'; }}
+                    onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-card)'}
                 >
-                    <GrFormNextLink />
+                    <FiChevronRight size={16} />
                 </button>
             </div>
         </div>
-
-
-    )
-}
+    );
+};
 
 export default ListPagination;

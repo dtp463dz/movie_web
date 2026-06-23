@@ -1,58 +1,148 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Category from '../pages/Category';
 import SearchBar from './SearchBar';
-import { FiMenu, FiX } from 'react-icons/fi';
-import { useState } from 'react';
+import { FiMenu, FiX, FiFilm } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
+
+const NAV_LINKS = [
+    { to: "/danh-sach/phim-le", label: "Phim Lẻ" },
+    { to: "/danh-sach/phim-bo", label: "Phim Bộ" },
+    { to: "/danh-sach/tv-shows", label: "TV Shows" },
+    { to: "/danh-sach/hoat-hinh", label: "Hoạt Hình" },
+];
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
     return (
+        <header
+            style={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 50,
+                background: scrolled ? 'rgba(10,10,15,0.96)' : 'rgba(10,10,15,0.75)',
+                backdropFilter: 'blur(20px)',
+                borderBottom: `1px solid ${scrolled ? 'rgba(255,255,255,0.07)' : 'transparent'}`,
+                transition: 'all 0.3s ease',
+            }}
+        >
+            <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, gap: 16 }}>
 
-        <header className="bg-gray-900 text-white px-4 py-3 shadow-md">
-            <div className="flex flex-wrap justify-between items-center gap-4">
-                {/* Logo + Hamburger */}
-                <div className="flex items-center justify-between w-full md:w-auto">
-                    <Link to="/" className="text-blue-300 font-bold text-xl">MovieWeb</Link>
-                    <button onClick={toggleMenu} className="text-white text-2xl md:hidden ml-auto">
-                        {isMenuOpen ? <FiX /> : <FiMenu />}
-                    </button>
+                    {/* Logo */}
+                    <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0 }}>
+                        <div style={{
+                            width: 34, height: 34, borderRadius: 8,
+                            background: 'var(--accent)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <FiFilm color="white" size={16} />
+                        </div>
+                        <span style={{ fontWeight: 700, fontSize: 18, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
+                            Movie<span style={{ color: 'var(--accent)' }}>Web</span>
+                        </span>
+                    </Link>
+
+                    {/* Desktop Nav */}
+                    <nav style={{ display: 'flex', alignItems: 'center', gap: 28 }} className="hidden-mobile">
+                        {NAV_LINKS.map(link => (
+                            <NavLink
+                                key={link.to}
+                                to={link.to}
+                                style={({ isActive }) => ({
+                                    color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                    fontWeight: isActive ? 600 : 400,
+                                    fontSize: 14,
+                                    textDecoration: 'none',
+                                    transition: 'color 0.2s',
+                                    position: 'relative',
+                                })}
+                            >
+                                {link.label}
+                            </NavLink>
+                        ))}
+                        <Category />
+                    </nav>
+
+                    {/* Right: Search + Hamburger */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <div className="search-desktop">
+                            <SearchBar />
+                        </div>
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            style={{
+                                background: 'var(--bg-card)',
+                                border: '1px solid var(--border)',
+                                borderRadius: 8,
+                                padding: '7px 9px',
+                                color: 'var(--text-secondary)',
+                                cursor: 'pointer',
+                                display: 'none',
+                            }}
+                            className="hamburger-btn"
+                            aria-label="Toggle menu"
+                        >
+                            {isMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+                        </button>
+                    </div>
                 </div>
 
-                {/* Nav links - desktop */}
-                <nav className="hidden md:flex flex-wrap items-center gap-6 flex-grow justify-center">
-                    <Link to="/danh-sach/phim-le" className="hover:text-blue-300">Phim Lẻ</Link>
-                    <Link to="/danh-sach/phim-bo" className="hover:text-blue-300">Phim Bộ</Link>
-                    <Link to="/danh-sach/tv-shows" className="hover:text-blue-300">TV Shows</Link>
-                    <Link to="/danh-sach/hoat-hinh" className="hover:text-blue-300">Hoạt Hình</Link>
-                    <Category />
-                    <Link to="/country" className="hover:text-blue-300">Quốc gia</Link>
-                    <Link to="/year" className="hover:text-blue-300">Năm</Link>
-                </nav>
-
-                {/* SearchBar - always visible */}
-                <div className="w-full md:w-auto md:ml-auto">
-                    <SearchBar />
-                </div>
+                {/* Mobile Menu */}
+                {isMenuOpen && (
+                    <div style={{
+                        padding: '12px 0 20px',
+                        borderTop: '1px solid var(--border)',
+                    }} className="mobile-menu">
+                        <div style={{ marginBottom: 16 }}>
+                            <SearchBar />
+                        </div>
+                        <nav style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            {NAV_LINKS.map(link => (
+                                <NavLink
+                                    key={link.to}
+                                    to={link.to}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    style={({ isActive }) => ({
+                                        padding: '10px 12px',
+                                        borderRadius: 8,
+                                        fontSize: 14,
+                                        fontWeight: isActive ? 600 : 400,
+                                        color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                        background: isActive ? 'rgba(255,255,255,0.05)' : 'transparent',
+                                        textDecoration: 'none',
+                                    })}
+                                >
+                                    {link.label}
+                                </NavLink>
+                            ))}
+                            <div style={{ padding: '10px 12px' }}>
+                                <Category mobile />
+                            </div>
+                        </nav>
+                    </div>
+                )}
             </div>
 
-            {/* Nav mobile */}
-            {isMenuOpen && (
-                <div className="flex flex-col mt-4 space-y-2 md:hidden">
-                    <Link to="/danh-sach/phim-le" onClick={toggleMenu} className="hover:text-blue-300">Phim Lẻ</Link>
-                    <Link to="/danh-sach/phim-bo" onClick={toggleMenu} className="hover:text-blue-300">Phim Bộ</Link>
-                    <Link to="/danh-sach/tv-shows" onClick={toggleMenu} className="hover:text-blue-300">TV Shows</Link>
-                    <Link to="/danh-sach/hoat-hinh" onClick={toggleMenu} className="hover:text-blue-300">Hoạt Hình</Link>
-                    <Category />
-                    <Link to="/country" onClick={toggleMenu} className="hover:text-blue-300">Quốc gia</Link>
-                    <Link to="/year" onClick={toggleMenu} className="hover:text-blue-300">Năm</Link>
-                </div>
-            )}
+            <style>{`
+                @media (max-width: 768px) {
+                    .hidden-mobile { display: none !important; }
+                    .hamburger-btn { display: flex !important; }
+                    .search-desktop { display: none; }
+                }
+                @media (max-width: 768px) {
+                    .mobile-menu { display: block; }
+                }
+            `}</style>
         </header>
-    )
-}
+    );
+};
 
 export default Header;
